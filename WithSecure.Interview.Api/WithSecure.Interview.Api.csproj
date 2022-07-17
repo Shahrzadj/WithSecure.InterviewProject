@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-	<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>418fcf0d-a94c-4a23-bd43-080ecefdee0d</UserSecretsId>
