@@ -42,7 +42,7 @@ namespace WithSecure.Interview.Api.Controllers
             }
             catch(Exception ex)
             {
-                throw new Exception("An Error Occured "+ex.Message);
+                throw new Exception("An Error Occured in ScanFile", ex);
             }
 
         }
@@ -77,7 +77,7 @@ namespace WithSecure.Interview.Api.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception("An Error Occured " + ex.Message);
+                throw new Exception("An Error Occured in CheckFileForVirus", ex);
             }
            
         }
