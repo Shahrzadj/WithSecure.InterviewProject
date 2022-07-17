@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using WithSecure.Interview.Common.Helper;
+using WithSecure.Interview.Api.Helper;
 
 namespace WithSecure.Interview.Api.Tests.UnitTests
 {

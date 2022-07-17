@@ -1,4 +1,4 @@
-﻿namespace WithSecure.Interview.Services.DownloadManagerServiece.Chunker
+﻿namespace WithSecure.Interview.Services.DownloadManagerService.Chunker
 {
     internal class Chunk
     {

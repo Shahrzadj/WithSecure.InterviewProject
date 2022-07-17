@@ -1,42 +1,37 @@
-﻿using WithSecure.Interview.Services.DownloadManagerServiece.Helper;
-
-namespace WithSecure.Interview.Services.DownloadManagerServiece.Chunker
+﻿namespace WithSecure.Interview.Services.DownloadManagerService.Chunker
 {
     internal class ChunkManager
     {
-        private readonly int ChunkCount;
-        private readonly string Url;
-        private int ChuckSize;
-        public ChunkManager(string sourceUrl, int chunkCount = 10)
+        private readonly int _chunkCount;
+        private int _chuckSize = 0;
+
+        public ChunkManager(int chunkCount = 10)
         {
-            Url = sourceUrl;
-            ChunkCount = chunkCount;
+            _chunkCount = chunkCount;
         }
-        public async Task<List<Chunk>> Chunk()
+
+        public List<Chunk> Chunk(long contentLength)
         {
             try
             {
                 var chunks = new List<Chunk>();
-                using (HttpClient client = new HttpClientFactory().CreateClient())
+                CalculateChunkSize(contentLength);
+                for (int i = 0; i < contentLength; i = i + _chuckSize)
                 {
-                    using (HttpResponseMessage response = await client.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead))
-                    {
-                        response.EnsureSuccessStatusCode();
-                        var contentLength = response.Content.Headers.ContentLength;
-                        ArgumentNullException.ThrowIfNull(contentLength);
-                        CalculateChunkSize(contentLength.Value);
-                        for (int i = 0; i < contentLength; i = i + ChuckSize)
-                        {
-                            chunks.Add(new Chunk(i, i + ChuckSize - 1));
-                        }
-                        return chunks;
-                    }
+                    chunks.Add(new Chunk(i, i + _chuckSize - 1));
                 }
+                Flush();
+                return chunks;
             }
             catch (Exception exception)
             {
                 throw new ApplicationException("Something is wrong with Chunk method.", exception);
             }
+        }
+
+        public void Flush()
+        {
+            Chunker.Chunk.Flush();
         }
 
         public byte[] MergeChunks(IEnumerable<Chunk> chunks)
@@ -46,12 +41,11 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece.Chunker
             {
                 file.AddRange(chunk.Data);
             }
-            Chunker.Chunk.Flush();
             return file.ToArray();
         }
         private void CalculateChunkSize(long contentLength)
         {
-            ChuckSize = (int)Math.Floor((double)contentLength / ChunkCount);
+            _chuckSize = (int)Math.Floor((double)contentLength / _chunkCount);
         }
     }
 }

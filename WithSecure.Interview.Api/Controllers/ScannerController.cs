@@ -1,12 +1,9 @@
-﻿using WithSecure.Interview.Services.DownloadManagerServiece;
+﻿using WithSecure.Interview.Services.DownloadManagerService;
 using WithSecure.Interview.Api.Dtos.VirusChecker;
 using WithSecure.Interview.Api.Dtos.Scanner;
-using WithSecure.Interview.Common.Helper;
+using WithSecure.Interview.Api.Helper;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
-using System.Text.Json;
-using System.Text;
-using System.IO.Compression;
 
 namespace WithSecure.Interview.Api.Controllers
 {
@@ -37,7 +34,9 @@ namespace WithSecure.Interview.Api.Controllers
         }
 
         private async Task<string> CheckFileForVirus(byte[] fileInByteArray)
-        {           
+        {
+            var chunkSize = 10_000_000; //10 MB
+
             var restClient = new RestClient("https://localhost:7198/");
             var request = new RestRequest($"api/VirusChecker", Method.Post);
             request.RequestFormat = DataFormat.Json;
@@ -45,9 +44,9 @@ namespace WithSecure.Interview.Api.Controllers
             request.AddHeader("Content-Type", "multipart/form-data");
 
             
-            if (isLargefile(fileInByteArray))
+            if (isLargefile(fileInByteArray, chunkSize))
             {
-                var chunks = fileInByteArray.Chunk(10_000_000);
+                var chunks = fileInByteArray.Chunk(chunkSize);
                 AddChunksToRequest(request, chunks);
             }
             else {
@@ -69,9 +68,9 @@ namespace WithSecure.Interview.Api.Controllers
             }
         }
 
-        private bool isLargefile(byte[] fileInByteArray)
+        private bool isLargefile(byte[] fileInByteArray, int chunkSize)
         {
-            return fileInByteArray.Length > 10_000_000 ? true : false ;
+            return fileInByteArray.Length > chunkSize ? true : false ;
         }
     }
 }

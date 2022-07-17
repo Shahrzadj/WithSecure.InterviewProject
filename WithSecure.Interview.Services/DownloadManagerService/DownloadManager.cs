@@ -1,59 +1,75 @@
-﻿using WithSecure.Interview.Services.DownloadManagerServiece.Chunker;
-using WithSecure.Interview.Services.DownloadManagerServiece.Helper;
+﻿using WithSecure.Interview.Services.DownloadManagerService.Chunker;
+using WithSecure.Interview.Services.DownloadManagerService.Http;
 using System.Net.Http.Headers;
 
-namespace WithSecure.Interview.Services.DownloadManagerServiece
+namespace WithSecure.Interview.Services.DownloadManagerService
 {
     public class DownloadManager
     {
         private readonly string _url;
-        private readonly string _fileExtension;       
+        private readonly string _fileExtension;
+        private readonly HttpClient _client;
 
         public DownloadManager(string url)
         {
             _url = url;
+            _client = new HttpClientFactory().CreateClient();
+            _fileExtension = Path.GetExtension(url);
+        }
+
+        public DownloadManager(HttpClient client, string url)
+        {
+            _url = url;
+            _client = client;
             _fileExtension = Path.GetExtension(url);
         }
 
         public async Task<byte[]> GetByteArrayAsync()
         {
-            var chunkManager = new ChunkManager(_url);
-            var chunks = await chunkManager.Chunk().ConfigureAwait(false);
-            var tasks = new List<Task>();
-            foreach (var chunk in chunks)
+            try
             {
-                tasks.Add(Task.Run(() =>
+                var contentLength = await HttpClientServices.GetContentLength(_client, _url).ConfigureAwait(false);
+
+                var chunkManager = new ChunkManager();
+                var chunks = chunkManager.Chunk(contentLength);
+                var tasks = new List<Task>();
+                foreach (var chunk in chunks)
                 {
-                    var chunkBytes = GetChunkAsync(_url, chunk).Result;
-                    Console.WriteLine($"... chunk #{chunk.ExecutionOrder} downloaded successfully! ...");
-                    chunk.Data = chunkBytes;
-                }));
+                    tasks.Add(Task.Run(() =>
+                    {
+                        var chunkBytes = DownloadChunkAsync(_url, chunk).Result;
+                        Console.WriteLine($"... chunk #{chunk.ExecutionOrder} downloaded successfully! ...");
+                        chunk.Data = chunkBytes;
+                    }));
+                }
+
+                await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                var finalByteArray = chunkManager.MergeChunks(chunks);
+                ArgumentNullException.ThrowIfNull(finalByteArray);
+
+                return finalByteArray;
             }
-
-            await Task.WhenAll(tasks).ConfigureAwait(false);
-
-            var finalByteArray = chunkManager.MergeChunks(chunks);
-            ArgumentNullException.ThrowIfNull(finalByteArray);
-
-            return finalByteArray;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-        private async Task<byte[]> GetChunkAsync(string filePath, Chunk chunk)
+        private async Task<byte[]> DownloadChunkAsync(string filePath, Chunk chunk)
         {
             using (var memory = new MemoryStream())
             {
                 byte[] totalBuffer = new byte[chunk.Length];
                 int receivedBytes = chunk.Start;
 
-                using (HttpClient client = new HttpClientFactory().CreateClient())
+                _client.DefaultRequestHeaders.Range = new RangeHeaderValue(chunk.Start, chunk.End);
+                using (Stream stream = await _client.GetStreamAsync(filePath).ConfigureAwait(false))
                 {
-                    client.DefaultRequestHeaders.Range = new RangeHeaderValue(chunk.Start, chunk.End);
-                    using (Stream stream = await client.GetStreamAsync(filePath).ConfigureAwait(false))
-                    {
-                        await stream.CopyToAsync(memory).ConfigureAwait(false);
-                        await stream.ReadAsync(totalBuffer, 0, chunk.Length).ConfigureAwait(false);
-                    }
-                    return memory.ToArray();
+                    await stream.CopyToAsync(memory).ConfigureAwait(false);
+                    await stream.ReadAsync(totalBuffer, 0, chunk.Length).ConfigureAwait(false);
                 }
+                return memory.ToArray();
+
             }
         }
 
