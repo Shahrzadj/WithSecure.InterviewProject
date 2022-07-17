@@ -9,14 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Api", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Common", "WithSecure.Interview.Common\WithSecure.Interview.Common.csproj", "{6BDA7E89-D1B3-43F6-AB67-3514157A8364}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Api.Tests", "WithSecure.Interview.Tests\WithSecure.Interview.Api.Tests.csproj", "{B0737754-6D94-45BC-B9DC-222B7245D93E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{150ED348-6783-4D81-AD7F-D32FE7DD5C23}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Services.Tests", "WithSecure.Interview.Services.Tests\WithSecure.Interview.Services.Tests.csproj", "{8F5E2842-2E4F-4A81-850F-5B512BF26271}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithSecure.Interview.Api.Tests", "WithSecure.Interview.Api.Tests\WithSecure.Interview.Api.Tests.csproj", "{8F101778-03E5-442F-95FC-4A70B4B4B304}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,14 +36,14 @@ Global
 		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F5E2842-2E4F-4A81-850F-5B512BF26271}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F5E2842-2E4F-4A81-850F-5B512BF26271}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F5E2842-2E4F-4A81-850F-5B512BF26271}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F5E2842-2E4F-4A81-850F-5B512BF26271}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F101778-03E5-442F-95FC-4A70B4B4B304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F101778-03E5-442F-95FC-4A70B4B4B304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F101778-03E5-442F-95FC-4A70B4B4B304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F101778-03E5-442F-95FC-4A70B4B4B304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

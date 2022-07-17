@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using WithSecure.Interview.Api.Helper;
 
 namespace WithSecure.Interview.Api.Tests.UnitTests
