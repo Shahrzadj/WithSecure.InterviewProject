@@ -7,81 +7,29 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
 {
     public class ChunkManagerTests
     {
-        private string url = "http://localhost";
-
         [Fact]
-        public async Task Chunk_WhenContentLengthIsNull_ThenThrowErrors()
+        public void Chunk_WhenContentLengthIs10MB_ThenChunksLengthShouldBe1MB()
         {
             //Arrange
-            HttpResponseMessage mockResponse = new();
-            mockResponse.Content.Headers.ContentLength = null;
-
-            var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse)
-                                .CreateMockHttClient();
-
-            var chunkManager = new ChunkManager(mockHttpClient, url);
+            var contentLength = 10_000_000;
 
             //Act
-            var function = async () => await chunkManager.Chunk();
-
-            //Assert
-            await function.Should().ThrowAsync<Exception>();
-        }
-
-        [Fact]
-        public async Task Chunk_WhenContentLengthIsZero_ThenChunksCountShouldBeZero()
-        {
-            //Arrange
-            HttpResponseMessage mockResponse = new();
-            mockResponse.Content.Headers.ContentLength = 0;
-            
-
-            var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse)
-                                .CreateMockHttClient();
-
-            //Act
-            var chunkManager = new ChunkManager(mockHttpClient, url);
-            var chunks = await chunkManager.Chunk();
-
-            //Assert
-            chunks.Count.Should().Be(0);
-        }
-
-        [Fact]
-        public async Task Chunk_WhenContentLengthIs10MB_ThenChunksLengthShouldBe1MB()
-        {
-            //Arrange
-            HttpResponseMessage mockResponse = new();
-            mockResponse.Content.Headers.ContentLength = 10_000_000; //10MB
-
-            var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse)
-                                .CreateMockHttClient();
-
-            //Act
-            var chunkManager = new ChunkManager(mockHttpClient, url);
-            var chunks = await chunkManager.Chunk();
+            var chunkManager = new ChunkManager();
+            var chunks = chunkManager.Chunk(contentLength);
 
             //Assert
             chunks.Should().AllSatisfy(x => x.Length.Equals(1_000_000));
         }
         
         [Fact]
-        public async Task Chunk_WhenContentLengthIs10MB_ThenSumOfChunksLengthShouldBe10MB()
+        public void Chunk_WhenContentLengthIs10MB_ThenSumOfChunksLengthShouldBe10MB()
         {
             //Arrange
-            HttpResponseMessage mockResponse = new();
-            mockResponse.Content.Headers.ContentLength = 10_000_000; //10MB
-
-            var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse)
-                                .CreateMockHttClient();
+            var contentLength = 10_000_000;
 
             //Act
-            var chunkManager = new ChunkManager(mockHttpClient, url);
-            var chunks = await chunkManager.Chunk();
+            var chunkManager = new ChunkManager();
+            var chunks = chunkManager.Chunk(contentLength);
 
             var totalChunksLength = chunks.Select(i => i.Length).Aggregate((x, y) => x + y);
 
@@ -90,41 +38,46 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
         }
 
         [Fact]
-        public async Task WhenChunkFile_AllChunksShouldBeUnique()
+        public void WhenChunkFile_AllChunksShouldBeUnique()
         {
             //Arrange
-            HttpResponseMessage mockResponse = new();
-            mockResponse.Content.Headers.ContentLength = 10_000_000; //10MB
-
-            var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse)
-                                .CreateMockHttClient();
+            var contentLength = 10_000_000;
 
             //Act
-            var chunkManager = new ChunkManager(mockHttpClient, url);
-            var chunks = await chunkManager.Chunk();
+            var chunkManager = new ChunkManager();
+            var chunks = chunkManager.Chunk(contentLength);
 
             //Assert
             chunks.Should().OnlyHaveUniqueItems();
         }
-            [Fact]
-        public async Task Chunk_WhenRequestWasNotSuccessfull_ThenThrowError()
+
+        [Fact]
+        public void WhenMergeChunks_ThenSizeOfMergedChunksShouldBeEqualToContentLength()
         {
             //Arrange
-            HttpResponseMessage mockResponse = new();
-            mockResponse.StatusCode = HttpStatusCode.BadRequest; 
-
-            var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse)
-                                .CreateMockHttClient();
+            var contentLength = 10_000_000;
 
             //Act
-            var chunkManager = new ChunkManager(mockHttpClient, url);          
-       
-            var function = async () => await chunkManager.Chunk();
+            var chunkManager = new ChunkManager();
+            var chunks = chunkManager.Chunk(contentLength);
+            var mergedChunks = chunkManager.MergeChunks(chunks);
+            //Assert
+            mergedChunks.Length.Should().Be(contentLength);
+        }
+
+        [Fact]
+        public void WhenChunkOperationIsDone_ChunkShouldBeFlushed()
+        {
+            //Arrange
+            var contentLength = 10_000_000;
+
+            //Act
+            var chunkManager = new ChunkManager();
+            var chunks1_ExecutionOrderOfFirstNode = chunkManager.Chunk(contentLength).First().ExecutionOrder;
+            var chunks2_ExecutionOrderOfFirstNode = chunkManager.Chunk(contentLength).First().ExecutionOrder;
 
             //Assert
-            await function.Should().ThrowAsync<ApplicationException>();
+            chunks1_ExecutionOrderOfFirstNode.Should().Be(1).Equals(chunks2_ExecutionOrderOfFirstNode);
         }
     }
 }

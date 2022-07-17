@@ -13,7 +13,27 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
             //Act
             Func<Task> action = async () => await downloadManager.GetByteArrayAsync();
             //Assert
-            await action.Should().ThrowAsync<ApplicationException>();
+            await action.Should().ThrowAsync<HttpRequestException>();
         }
+
+        //[Fact]
+        //public async Task Chunk_WhenContentLengthIsZero_ThenChunksCountShouldBeZero()
+        //{
+        //    //Arrange
+        //    HttpResponseMessage mockResponse = new();
+        //    mockResponse.Content.Headers.ContentLength = 0;
+
+
+        //    var mockHttpClient = HttpClientHelper
+        //                        .CreateMockHandler(mockResponse)
+        //                        .CreateMockHttClient();
+
+        //    //Act
+        //    var chunkManager = new ChunkManager(mockHttpClient, url);
+        //    var chunks = await chunkManager.Chunk();
+
+        //    //Assert
+        //    chunks.Count.Should().Be(0);
+        //}
     }
 }
