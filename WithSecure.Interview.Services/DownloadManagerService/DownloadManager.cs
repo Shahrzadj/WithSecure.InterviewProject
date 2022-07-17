@@ -7,7 +7,7 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece
     public class DownloadManager
     {
         private readonly string _url;
-        private readonly string _fileExtension;
+        private readonly string _fileExtension;       
 
         public DownloadManager(string url)
         {
@@ -24,7 +24,8 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece
             {
                 tasks.Add(Task.Run(() =>
                 {
-                    var chunkBytes = GetFileAsync(_url, chunk).Result;
+                    var chunkBytes = GetChunkAsync(_url, chunk).Result;
+                    Console.WriteLine($"... chunk #{chunk.ExecutionOrder} downloaded successfully! ...");
                     chunk.Data = chunkBytes;
                 }));
             }
@@ -33,9 +34,10 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece
 
             var finalByteArray = chunkManager.MergeChunks(chunks);
             ArgumentNullException.ThrowIfNull(finalByteArray);
+
             return finalByteArray;
         }
-        private async Task<byte[]> GetFileAsync(string filePath, Chunk chunk)
+        private async Task<byte[]> GetChunkAsync(string filePath, Chunk chunk)
         {
             using (var memory = new MemoryStream())
             {
@@ -57,7 +59,7 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece
 
 
         // I used this method to check if the downloaded file is correct or not!
-        public async Task DownloadFileAsync(string outputUrl = "c:/temp")
+        public async Task DownloadFileAsync(string outputUrl = "c:/")
         {
             if (!Directory.Exists(outputUrl))
             {
