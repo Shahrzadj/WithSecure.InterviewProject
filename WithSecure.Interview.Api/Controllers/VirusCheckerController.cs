@@ -5,6 +5,7 @@ namespace WithSecure.Interview.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class VirusCheckerController : ControllerBase
     {
         [HttpPost]
