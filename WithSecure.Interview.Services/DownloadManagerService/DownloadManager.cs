@@ -7,12 +7,21 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece
     public class DownloadManager
     {
         private readonly string _url;
-        private readonly string _fileExtension;       
+        private readonly string _fileExtension;
+        private readonly HttpClient _client;
 
         public DownloadManager(string url)
         {
             _url = url;
             _fileExtension = Path.GetExtension(url);
+            _client = new HttpClient();
+        }
+
+        public DownloadManager(HttpClient client, string url)
+        {
+            _url = url;
+            _fileExtension = Path.GetExtension(url);
+            _client = client;
         }
 
         public async Task<byte[]> GetByteArrayAsync()
@@ -44,16 +53,14 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece
                 byte[] totalBuffer = new byte[chunk.Length];
                 int receivedBytes = chunk.Start;
 
-                using (HttpClient client = new HttpClientFactory().CreateClient())
+                _client.DefaultRequestHeaders.Range = new RangeHeaderValue(chunk.Start, chunk.End);
+                using (Stream stream = await _client.GetStreamAsync(filePath).ConfigureAwait(false))
                 {
-                    client.DefaultRequestHeaders.Range = new RangeHeaderValue(chunk.Start, chunk.End);
-                    using (Stream stream = await client.GetStreamAsync(filePath).ConfigureAwait(false))
-                    {
-                        await stream.CopyToAsync(memory).ConfigureAwait(false);
-                        await stream.ReadAsync(totalBuffer, 0, chunk.Length).ConfigureAwait(false);
-                    }
-                    return memory.ToArray();
+                    await stream.CopyToAsync(memory).ConfigureAwait(false);
+                    await stream.ReadAsync(totalBuffer, 0, chunk.Length).ConfigureAwait(false);
                 }
+                return memory.ToArray();
+
             }
         }
 
