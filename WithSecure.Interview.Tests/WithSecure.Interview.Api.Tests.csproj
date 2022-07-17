@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WithSecure.Interview.Common\WithSecure.Interview.Common.csproj" />
+    <ProjectReference Include="..\WithSecure.Interview.Api\WithSecure.Interview.Api.csproj" />
   </ItemGroup>
 
 </Project>

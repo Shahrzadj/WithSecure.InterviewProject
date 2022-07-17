@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Api", "WithSecure.Interview.Api\WithSecure.Interview.Api.csproj", "{58B15126-0B8A-4DF0-94A1-94DAAD4B13AF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Common", "WithSecure.Interview.Common\WithSecure.Interview.Common.csproj", "{6BDA7E89-D1B3-43F6-AB67-3514157A8364}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Services.Tests", "WithSecure.Interview.Services.Tests\WithSecure.Interview.Services.Tests.csproj", "{B9E7EA36-9CEB-408C-9BAA-2A9D68F2A135}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WithSecure.Interview.Api.Tests", "WithSecure.Interview.Tests\WithSecure.Interview.Api.Tests.csproj", "{B0737754-6D94-45BC-B9DC-222B7245D93E}"
@@ -32,10 +30,6 @@ Global
 		{58B15126-0B8A-4DF0-94A1-94DAAD4B13AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58B15126-0B8A-4DF0-94A1-94DAAD4B13AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58B15126-0B8A-4DF0-94A1-94DAAD4B13AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9E7EA36-9CEB-408C-9BAA-2A9D68F2A135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9E7EA36-9CEB-408C-9BAA-2A9D68F2A135}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9E7EA36-9CEB-408C-9BAA-2A9D68F2A135}.Release|Any CPU.ActiveCfg = Release|Any CPU
