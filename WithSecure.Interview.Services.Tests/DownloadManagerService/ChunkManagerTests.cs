@@ -38,7 +38,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
             
 
             var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse, url)
+                                .CreateMockHandler(mockResponse)
                                 .CreateMockHttClient();
 
             //Act
@@ -57,7 +57,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
             mockResponse.Content.Headers.ContentLength = 10_000_000; //10MB
 
             var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse, url)
+                                .CreateMockHandler(mockResponse)
                                 .CreateMockHttClient();
 
             //Act
@@ -76,7 +76,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
             mockResponse.Content.Headers.ContentLength = 10_000_000; //10MB
 
             var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse, url)
+                                .CreateMockHandler(mockResponse)
                                 .CreateMockHttClient();
 
             //Act
@@ -97,7 +97,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
             mockResponse.Content.Headers.ContentLength = 10_000_000; //10MB
 
             var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse, url)
+                                .CreateMockHandler(mockResponse)
                                 .CreateMockHttClient();
 
             //Act
@@ -115,7 +115,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
             mockResponse.StatusCode = HttpStatusCode.BadRequest; 
 
             var mockHttpClient = HttpClientHelper
-                                .CreateMockHandler(mockResponse, url)
+                                .CreateMockHandler(mockResponse)
                                 .CreateMockHttClient();
 
             //Act
