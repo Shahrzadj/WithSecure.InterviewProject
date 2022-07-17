@@ -15,47 +15,64 @@ namespace WithSecure.Interview.Api.Controllers
         public async Task<IActionResult> ScanFile(ScannerRequestDto fileDto)
         {
             var url = fileDto.UrlAddress;
-            if (!string.IsNullOrWhiteSpace(url))
+            try
             {
-                var downloadManager = new DownloadManager(url);
-                var fileInByteArray = await downloadManager.GetByteArrayAsync();
-                var virusCheckingResult = await CheckFileForVirus(fileInByteArray);
-                var hashedValue = SecurityHelper.CalculateSHA1(fileInByteArray);
-                return Ok(new ScannerResponseDto()
+                if (!string.IsNullOrWhiteSpace(url))
                 {
-                        result= virusCheckingResult,
-                        Sha1= hashedValue
-                });
+                    var downloadManager = new DownloadManager(url);
+                    var fileInByteArray = await downloadManager.GetByteArrayAsync();
+                    var virusCheckingResult = await CheckFileForVirus(fileInByteArray);
+                    var hashedValue = SecurityHelper.CalculateSHA1(fileInByteArray);
+                    return Ok(new ScannerResponseDto()
+                    {
+                        result = virusCheckingResult,
+                        Sha1 = hashedValue
+                    });
+                }
+                else
+                {
+                    throw new Exception("Url can not be null!");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                throw new Exception("Url can not be null!");
+                throw new Exception("An Error Occured "+ex.Message);
             }
+
         }
 
         private async Task<string> CheckFileForVirus(byte[] fileInByteArray)
         {
-            var chunkSize = 10_000_000; //10 MB
-
-            var restClient = new RestClient("https://localhost:7198/");
-            var request = new RestRequest($"api/VirusChecker", Method.Post);
-            request.RequestFormat = DataFormat.Json;
-            request.AlwaysMultipartFormData = true;
-            request.AddHeader("Content-Type", "multipart/form-data");
-
-            
-            if (isLargefile(fileInByteArray, chunkSize))
+            try
             {
-                var chunks = fileInByteArray.Chunk(chunkSize);
-                AddChunksToRequest(request, chunks);
-            }
-            else {
-                request.AddFile("file", fileInByteArray, "file");
-            }
+                var chunkSize = 10_000_000; //10 MB
 
-            var response = await restClient.PostAsync<VirusCheckerResponseDto>(request);
-            ArgumentNullException.ThrowIfNull(response);
-            return response.Result;
+                var restClient = new RestClient("https://localhost:7198/");
+                var request = new RestRequest($"api/VirusChecker", Method.Post);
+                request.RequestFormat = DataFormat.Json;
+                request.AlwaysMultipartFormData = true;
+                request.AddHeader("Content-Type", "multipart/form-data");
+
+
+                if (isLargefile(fileInByteArray, chunkSize))
+                {
+                    var chunks = fileInByteArray.Chunk(chunkSize);
+                    AddChunksToRequest(request, chunks);
+                }
+                else
+                {
+                    request.AddFile("file", fileInByteArray, "file");
+                }
+
+                var response = await restClient.PostAsync<VirusCheckerResponseDto>(request);
+                ArgumentNullException.ThrowIfNull(response);
+                return response.Result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An Error Occured " + ex.Message);
+            }
+           
         }
 
         private static void AddChunksToRequest(RestRequest request, IEnumerable<byte[]> chunks)
