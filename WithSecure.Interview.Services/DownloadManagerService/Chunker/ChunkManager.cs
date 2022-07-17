@@ -52,6 +52,7 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece.Chunker
             {
                 file.AddRange(chunk.Data);
             }
+            Chunker.Chunk.Flush();
             return file.ToArray();
         }
         private void CalculateChunkSize(long contentLength)

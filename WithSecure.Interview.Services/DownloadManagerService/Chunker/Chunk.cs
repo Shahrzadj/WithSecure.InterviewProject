@@ -20,5 +20,10 @@
             End = end;
             Data = new byte[Length];
         }
+
+        public static void Flush()
+        {
+            currentOrder = 0;
+        }
     }
 }
