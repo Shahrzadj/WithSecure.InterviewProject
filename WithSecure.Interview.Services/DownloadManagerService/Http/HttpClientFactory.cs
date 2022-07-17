@@ -1,4 +1,4 @@
-﻿namespace WithSecure.Interview.Services.DownloadManagerServiece.Helper
+﻿namespace WithSecure.Interview.Services.DownloadManagerService.Http
 {
     internal class HttpClientFactory
     {

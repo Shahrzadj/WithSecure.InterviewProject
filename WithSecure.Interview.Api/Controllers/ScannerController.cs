@@ -1,12 +1,9 @@
-﻿using WithSecure.Interview.Services.DownloadManagerServiece;
+﻿using WithSecure.Interview.Services.DownloadManagerService;
 using WithSecure.Interview.Api.Dtos.VirusChecker;
 using WithSecure.Interview.Api.Dtos.Scanner;
 using WithSecure.Interview.Common.Helper;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
-using System.Text.Json;
-using System.Text;
-using System.IO.Compression;
 
 namespace WithSecure.Interview.Api.Controllers
 {

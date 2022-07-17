@@ -1,9 +1,8 @@
-﻿using WithSecure.Interview.Services.DownloadManagerServiece.Chunker;
-using WithSecure.Interview.Services.DownloadManagerServiece.Helper;
+﻿using WithSecure.Interview.Services.DownloadManagerService.Chunker;
+using WithSecure.Interview.Services.DownloadManagerService.Http;
 using System.Net.Http.Headers;
-using WithSecure.Interview.Services.DownloadManagerService.Helper;
 
-namespace WithSecure.Interview.Services.DownloadManagerServiece
+namespace WithSecure.Interview.Services.DownloadManagerService
 {
     public class DownloadManager
     {
@@ -14,14 +13,14 @@ namespace WithSecure.Interview.Services.DownloadManagerServiece
         public DownloadManager(string url)
         {
             _url = url;
-            _fileExtension = Path.GetExtension(url);
             _client = new HttpClientFactory().CreateClient();
+            _fileExtension = Path.GetExtension(url);
         }
 
         public DownloadManager(HttpClient client, string url)
         {
-            _client = client;
             _url = url;
+            _client = client;
             _fileExtension = Path.GetExtension(url);
         }
 

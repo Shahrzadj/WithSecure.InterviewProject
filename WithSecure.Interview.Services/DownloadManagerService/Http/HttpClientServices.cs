@@ -1,4 +1,4 @@
-﻿namespace WithSecure.Interview.Services.DownloadManagerService.Helper
+﻿namespace WithSecure.Interview.Services.DownloadManagerService.Http
 {
     public static class HttpClientServices
     {

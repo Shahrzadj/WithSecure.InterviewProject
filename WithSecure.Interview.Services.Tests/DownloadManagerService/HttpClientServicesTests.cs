@@ -1,12 +1,7 @@
-﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using WithSecure.Interview.Services.DownloadManagerService.Helper;
+﻿using WithSecure.Interview.Services.DownloadManagerService.Http;
 using WithSecure.Interview.Services.Tests.DownloadManagerService.Helper;
+using FluentAssertions;
+using System.Net;
 
 namespace WithSecure.Interview.Services.Tests.DownloadManagerService
 {

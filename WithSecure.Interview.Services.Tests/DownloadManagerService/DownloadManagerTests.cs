@@ -1,5 +1,5 @@
 using FluentAssertions;
-using WithSecure.Interview.Services.DownloadManagerServiece;
+using WithSecure.Interview.Services.DownloadManagerService;
 
 namespace WithSecure.Interview.Services.Tests.DownloadManagerService
 {

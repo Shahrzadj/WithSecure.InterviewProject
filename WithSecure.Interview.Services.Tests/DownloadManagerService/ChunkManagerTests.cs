@@ -1,7 +1,5 @@
-﻿using WithSecure.Interview.Services.DownloadManagerServiece.Chunker;
+﻿using WithSecure.Interview.Services.DownloadManagerService.Chunker;
 using FluentAssertions;
-using WithSecure.Interview.Services.Tests.DownloadManagerService.Helper;
-using System.Net;
 
 namespace WithSecure.Interview.Services.Tests.DownloadManagerService
 {
