@@ -11,6 +11,12 @@ namespace WithSecure.Interview.Api.Controllers
     [ApiController]
     public class ScannerController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+        public ScannerController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         [HttpPost]
         public async Task<IActionResult> ScanFile(ScannerRequestDto fileDto)
         {
@@ -47,7 +53,8 @@ namespace WithSecure.Interview.Api.Controllers
             {
                 var chunkSize = 10_000_000; //10 MB
 
-                var restClient = new RestClient("https://localhost:7198/");
+                var baseApiUrl = _configuration.GetSection("ApiConfiguration:BaseAddress").Value;
+                var restClient = new RestClient(baseApiUrl);
                 var request = new RestRequest($"api/VirusChecker", Method.Post);
                 request.RequestFormat = DataFormat.Json;
                 request.AlwaysMultipartFormData = true;
