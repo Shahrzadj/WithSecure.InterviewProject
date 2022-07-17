@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 
 namespace WithSecure.Interview.Common.Helper
 {
@@ -11,9 +6,16 @@ namespace WithSecure.Interview.Common.Helper
     {
         public static byte[] CalculateSHA1(byte[] fileInByteArray)
         {
-            SHA1 sha1Hash = SHA1.Create();
-            var hashedVaule = sha1Hash.ComputeHash(fileInByteArray);
-            return hashedVaule;
+            if (fileInByteArray != null && fileInByteArray.Length > 0)
+            {
+                SHA1 sha1Hash = SHA1.Create();
+                var hashedVaule = sha1Hash.ComputeHash(fileInByteArray);
+                return hashedVaule;
+            }
+            else
+            {
+                throw new Exception("ByteArray for calculate SHA1 can not be null.");
+            }
         }
     }
 }

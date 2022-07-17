@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithSecure.Interview.Api", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithSecure.Interview.Common", "WithSecure.Interview.Common\WithSecure.Interview.Common.csproj", "{6BDA7E89-D1B3-43F6-AB67-3514157A8364}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithSecure.Interview.Api.Tests", "WithSecure.Interview.Tests\WithSecure.Interview.Api.Tests.csproj", "{B0737754-6D94-45BC-B9DC-222B7245D93E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BDA7E89-D1B3-43F6-AB67-3514157A8364}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0737754-6D94-45BC-B9DC-222B7245D93E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
