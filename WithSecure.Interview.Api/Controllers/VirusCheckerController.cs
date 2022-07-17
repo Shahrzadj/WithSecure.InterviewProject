@@ -8,7 +8,7 @@ namespace WithSecure.Interview.Api.Controllers
     public class VirusCheckerController : ControllerBase
     {
         [HttpPost]
-        public IActionResult CheckForViruses([FromBody] VirusCheckerRequestDto file)
+        public ActionResult<VirusCheckerResponseDto> CheckForViruses(IFormCollection file)
         {
             return Ok(new VirusCheckerResponseDto { Result = "clean" });
         }

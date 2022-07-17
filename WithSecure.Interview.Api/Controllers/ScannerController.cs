@@ -5,6 +5,8 @@ using WithSecure.Interview.Common.Helper;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using System.Text.Json;
+using System.Text;
+using System.IO.Compression;
 
 namespace WithSecure.Interview.Api.Controllers
 {
@@ -12,11 +14,6 @@ namespace WithSecure.Interview.Api.Controllers
     [ApiController]
     public class ScannerController : ControllerBase
     {
-        private readonly RestClient _client;
-        public ScannerController()
-        {
-            _client = new RestClient("https://localhost:7198/");
-        }
         [HttpPost]
         public async Task<IActionResult> ScanFile(ScannerRequestDto fileDto)
         {
@@ -40,13 +37,41 @@ namespace WithSecure.Interview.Api.Controllers
         }
 
         private async Task<string> CheckFileForVirus(byte[] fileInByteArray)
-        {
-            string jsonString = JsonSerializer.Serialize(fileInByteArray);
-            var request = new RestRequest($"api/VirusChecker").AddJsonBody(new VirusCheckerRequestDto { FileInByteArray = jsonString });
-            var response = await _client.PostAsync<VirusCheckerResponseDto>(request);
-            return response.Result;
+        {           
+            var restClient = new RestClient("https://localhost:7198/");
+            var request = new RestRequest($"api/VirusChecker", Method.Post);
+            request.RequestFormat = DataFormat.Json;
+            request.AlwaysMultipartFormData = true;
+            request.AddHeader("Content-Type", "multipart/form-data");
 
-         
+            
+            if (isLargefile(fileInByteArray))
+            {
+                var chunks = fileInByteArray.Chunk(10_000_000);
+                AddChunksToRequest(request, chunks);
+            }
+            else {
+                request.AddFile("file", fileInByteArray, "file");
+            }
+
+            var response = await restClient.PostAsync<VirusCheckerResponseDto>(request);
+            ArgumentNullException.ThrowIfNull(response);
+            return response.Result;
+        }
+
+        private static void AddChunksToRequest(RestRequest request, IEnumerable<byte[]> chunks)
+        {
+            var index = 0;
+            foreach (var chunk in chunks)
+            {
+                request.AddFile("file", chunk, $"{index}");
+                index++;
+            }
+        }
+
+        private bool isLargefile(byte[] fileInByteArray)
+        {
+            return fileInByteArray.Length > 10_000_000 ? true : false ;
         }
     }
 }
