@@ -3,7 +3,7 @@ using FluentAssertions;
 
 namespace WithSecure.Interview.Services.Tests.DownloadManagerService
 {
-    public class ChunkManagerTests
+    public class ChunkManagerTests : IDisposable
     {
         [Fact]
         public void Chunk_WhenContentLengthIs10MB_ThenChunksLengthShouldBe1MB()
@@ -76,6 +76,36 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
 
             //Assert
             chunks1_ExecutionOrderOfFirstNode.Should().Be(1).Equals(chunks2_ExecutionOrderOfFirstNode);
+        }
+
+        [Fact]
+        public void Chunk_WhenCreate_ThenExecutionOrderShouldIncrease()
+        {
+            //Act
+            var chunk1 = new Chunk(0, 1);
+            var chunk2 = new Chunk(0, 1);
+
+            //Assert
+            chunk1.ExecutionOrder.Should().Be(1);
+            chunk2.ExecutionOrder.Should().Be(2);
+        }
+        
+        [Fact]
+        public void Chunk_WhenFlush_ChunkStateShouldFlushed()
+        {
+            //Act
+            var chunk1 = new Chunk(0, 1);
+            Chunk.Flush();
+            var chunk2 = new Chunk(0, 1);
+
+            //Assert
+            chunk1.ExecutionOrder.Should().Be(1);
+            chunk2.ExecutionOrder.Should().Be(1);
+        }
+
+        public void Dispose()
+        {
+            Chunk.Flush();
         }
     }
 }

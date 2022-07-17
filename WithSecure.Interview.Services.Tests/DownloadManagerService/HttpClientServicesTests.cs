@@ -7,7 +7,13 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
 {
     public class HttpClientServicesTests
     {
+        private readonly HttpClientServices _httpClientServices;
         private string url = "http://localhost";
+
+        public HttpClientServicesTests()
+        {
+            _httpClientServices = new HttpClientServices();
+        }
 
         [Fact]
         public async Task Chunk_WhenRequestWasNotSuccessfull_ThenShouldThrowException()
@@ -22,7 +28,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
                                 .CreateMockHttClient();
 
             //Act
-            var action = async () => await HttpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
+            var action = async () => await _httpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
 
             //Assert
             await action.Should().ThrowAsync<HttpRequestException>();
@@ -41,7 +47,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
                                 .CreateMockHttClient();
 
             //Act
-            var action = async () => await HttpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
+            var action = async () => await _httpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
 
             //Assert
             await action.Should().ThrowAsync<ArgumentNullException>();
@@ -60,7 +66,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
                                 .CreateMockHttClient();
 
             //Act
-            var action = async () => await HttpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
+            var action = async () => await _httpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
 
             //Assert
             await action.Should().ThrowAsync<ArgumentOutOfRangeException>();
@@ -79,7 +85,7 @@ namespace WithSecure.Interview.Services.Tests.DownloadManagerService
                                 .CreateMockHttClient();
 
             //Act
-            var action = async () => await HttpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
+            var action = async () => await _httpClientServices.GetContentLength(mockHttpClient, url).ConfigureAwait(false);
 
             //Assert
             await action.Should().ThrowAsync<ArgumentOutOfRangeException>();

@@ -13,8 +13,8 @@ namespace WithSecure.Interview.Services.DownloadManagerService
         public DownloadManager(string url)
         {
             _url = url;
-            _client = new HttpClientFactory().CreateClient();
             _fileExtension = Path.GetExtension(url);
+            _client = new HttpClientFactory().CreateClient();
         }
 
         public DownloadManager(HttpClient client, string url)
@@ -28,7 +28,8 @@ namespace WithSecure.Interview.Services.DownloadManagerService
         {
             try
             {
-                var contentLength = await HttpClientServices.GetContentLength(_client, _url).ConfigureAwait(false);
+                var _httpClientServices = new HttpClientServices();
+                var contentLength = await _httpClientServices.GetContentLength(_client, _url).ConfigureAwait(false);
 
                 var chunkManager = new ChunkManager();
                 var chunks = chunkManager.Chunk(contentLength);
@@ -50,9 +51,9 @@ namespace WithSecure.Interview.Services.DownloadManagerService
 
                 return finalByteArray;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
         private async Task<byte[]> DownloadChunkAsync(string filePath, Chunk chunk)

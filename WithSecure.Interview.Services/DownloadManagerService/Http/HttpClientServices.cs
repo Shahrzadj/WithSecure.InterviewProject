@@ -1,18 +1,18 @@
 ﻿namespace WithSecure.Interview.Services.DownloadManagerService.Http
 {
-    public static class HttpClientServices
+    internal class HttpClientServices: IHttpClientServices
     {
-        public static async Task<long> GetContentLength(HttpClient client, string url)
+        public async Task<long> GetContentLength(HttpClient client, string url)
         {
             using HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
             
             response.EnsureSuccessStatusCode();
-            response.EnsureContentIsValid();
+            EnsureContentIsValid(response);
 
             return response.Content.Headers.ContentLength.Value;
         }
 
-        private static void EnsureContentIsValid(this HttpResponseMessage response)
+        private void EnsureContentIsValid(HttpResponseMessage response)
         {
             var contentLength = response.Content.Headers.ContentLength;
 

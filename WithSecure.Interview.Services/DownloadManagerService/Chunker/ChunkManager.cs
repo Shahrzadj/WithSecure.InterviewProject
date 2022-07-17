@@ -1,6 +1,6 @@
 ﻿namespace WithSecure.Interview.Services.DownloadManagerService.Chunker
 {
-    internal class ChunkManager
+    internal class ChunkManager: IChunkManager
     {
         private readonly int _chunkCount;
         private int _chuckSize = 0;
@@ -29,11 +29,6 @@
             }
         }
 
-        public void Flush()
-        {
-            Chunker.Chunk.Flush();
-        }
-
         public byte[] MergeChunks(IEnumerable<Chunk> chunks)
         {
             var file = new List<byte>();
@@ -43,9 +38,16 @@
             }
             return file.ToArray();
         }
+
+        public void Flush()
+        {
+            Chunker.Chunk.Flush();
+        }
+
         private void CalculateChunkSize(long contentLength)
         {
             _chuckSize = (int)Math.Floor((double)contentLength / _chunkCount);
         }
+        
     }
 }
