@@ -70,7 +70,6 @@ namespace WithSecure.Interview.Services.DownloadManagerService
                     await stream.ReadAsync(totalBuffer, 0, chunk.Length).ConfigureAwait(false);
                 }
                 return memory.ToArray();
-
             }
         }
 
